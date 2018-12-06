@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# 2018-12-04 thehungryturnip@gmail.com
+# 2018-12-03 thehungryturnip@gmail.com
 
 import sys
 
@@ -16,6 +16,11 @@ if __name__ == '__main__':
             line = file_.readline()
 
     sum_ = 0
+    for d in deltas:
+        sum_ += d
+    print(f'[01a] total: {sum_}')
+
+    sum_ = 0
     seen = {}
     next_ = 0
     # assumes that <sum_> *will* eventually be in <seen>
@@ -25,5 +30,4 @@ if __name__ == '__main__':
         next_ += 1
         if next_ == len(deltas):
             next_ = 0
-
-    print(f'duplicate sum: {sum_}')
+    print(f'[01b] duplicate sum: {sum_}')
