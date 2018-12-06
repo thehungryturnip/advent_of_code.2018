@@ -11,7 +11,8 @@ if __name__ == '__main__':
     
     class Claim():
         
-        def __init__(self, x, y, w, h):
+        def __init__(self, id_, x, y, w, h):
+            self.id_ = id_
             self.x = x
             self.y = y
             self.w = w
@@ -24,24 +25,16 @@ if __name__ == '__main__':
     with open(filename, 'r') as file_:
         line = file_.readline()
         while line:
-        # for i in range(2):
-            # print(line, end='')
-            d = re.split(' |,|: |x|\n', line)
-            c = Claim(int(d[2]), int(d[3]), int(d[4]), int(d[5]))
+            d = re.split('#| |,|: |x|\n', line)
+            c = Claim(int(d[1]), int(d[3]), int(d[4]), int(d[5]), int(d[6]))
             claims.append(c)
-            # print(c)
             line = file_.readline()
-    # claims.append(Claim(0,0,2,3))
-    # claims.append(Claim(0,0,1,5))
-    # claims.append(Claim(0,0,5,1))
 
     fabric = {}
     for c in claims:
-        # print(c)
         for h in range(c.h):
             for w in range(c.w):
-                coord = f'{c.x + h}x{c.y + w}'
-                # print(coord)
+                coord = f'{c.x + w}x{c.y + h}'
                 if coord in fabric:
                     fabric[coord] += 1
                 else:
@@ -51,5 +44,14 @@ if __name__ == '__main__':
     for k in fabric:
         if fabric[k] > 1:
             overlaps += 1
-
     print(f'overlaps: {overlaps}')
+
+    for c in claims:
+        overlap = False
+        for h in range(c.h):
+            for w in range(c.w):
+                coord = f'{c.x + w}x{c.y + h}'
+                if fabric[coord] > 1:
+                    overlap = True
+        if not overlap:
+            print(f'no overlap: {c.id_}')
