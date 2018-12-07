@@ -32,8 +32,17 @@ if __name__ == '__main__':
 
         def __init__(self, id_):
             self.id_ = id_
-            self.sleep = 0
-            self.schedule = {}
+            self.sleep_schedule = {}
+
+        def add_sleep(self, from_, to):
+            for i in range(from_, to):
+                if i not in self.sleep_schedule:
+                    self.sleep_schedule[i] = 1
+                    continue
+                self.sleep_schedule[i] += 1
+
+        def __str__(self):
+            return f'#{self.id_}:\n{self.sleep_schedule}'
 
     lines = []
     with open(filename, 'r') as file_:
@@ -57,13 +66,26 @@ if __name__ == '__main__':
         if entry.type == LogEntry.EventType.SLEEP:
             start = entry.min
         if entry.type == LogEntry.EventType.WAKE:
-            guards[id_].sleep += entry.min - start
+            guards[id_].add_sleep(start, entry.min)
 
     sleepy_guard = None
-    for k in guards:
+    for g in guards.values():
         if not sleepy_guard:
-            sleepy_guard = guards[k]
-            next
-        if guards[k].sleep > sleepy_guard.sleep:
-            sleepy_guard = guards[k]
-    print(f'[04a] sleepy_guard #{sleepy_guard.id_} slept {sleepy_guard.sleep} minutes!')
+            sleepy_guard = g
+            continue
+        if (sum(g.sleep_schedule.values()) > 
+            sum(sleepy_guard.sleep_schedule.values())):
+            sleepy_guard = g
+
+    sleepy_min = None
+    for k in sleepy_guard.sleep_schedule:
+        if not sleepy_min:
+            sleepy_min = k
+            continue
+        if (sleepy_guard.sleep_schedule[k] > 
+            sleepy_guard.sleep_schedule[sleepy_min]):
+            sleepy_min = k
+    print(f'[04a] sleepy_guard #{sleepy_guard.id_}' +
+          f' slept for {sum(sleepy_guard.sleep_schedule.values())} minutes' +
+          f' and is most sleepy at {sleepy_min}!' +
+          f' {sleepy_guard.id_}x{sleepy_min}={sleepy_guard.id_ * sleepy_min}')
