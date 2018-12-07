@@ -33,7 +33,7 @@ if __name__ == '__main__':
     for i in range(len(ids) - 1):
         for j in range(i + 1, len(ids)):
             if not len(ids[i]) == len(ids[j]):
-                next
+                continue
             for k in range(len(ids[i])):
                 if ids[i][:k] + ids[i][k + 1:] == ids[j][:k] + ids[j][k + 1:]:
                     print(f'[02b] {ids[i]}')
