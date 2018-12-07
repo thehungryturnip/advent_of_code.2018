@@ -89,3 +89,20 @@ if __name__ == '__main__':
           f' slept for {sum(sleepy_guard.sleep_schedule.values())} minutes' +
           f' and is most sleepy at {sleepy_min}!' +
           f' {sleepy_guard.id_}x{sleepy_min}={sleepy_guard.id_ * sleepy_min}')
+
+    sleepy_guard = None
+    sleepy_min = None
+    for g in guards.values():
+        if not sleepy_guard:
+            sleepy_guard = g
+        for m in g.sleep_schedule:
+            if not sleepy_min:
+                sleepy_min = m
+                continue
+            if g.sleep_schedule[m] > sleepy_guard.sleep_schedule[sleepy_min]:
+                sleepy_guard = g
+                sleepy_min = m
+    print(f'[04b] sleepy_guard #{sleepy_guard.id_}' +
+          f' slept for a total of {sleepy_guard.sleep_schedule[sleepy_min]} minutes' +
+          f' at {sleepy_min}!' +
+          f' {sleepy_guard.id_}x{sleepy_min}={sleepy_guard.id_ * sleepy_min}')
