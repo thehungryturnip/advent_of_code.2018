@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# 2018-12-06 bob.p.wei@gmail.com
+# 2018-12-06 thehungryturnip@gmail.com
 
 import sys
 
