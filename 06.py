@@ -97,13 +97,34 @@ if __name__ == '__main__':
     def find_biggest_not_edge(areas):
         biggest = None
         for a in areas:
-            if not a.edge:
-                if not biggest:
-                    biggest = a
-                    continue
-                if a.size > biggest.size:
-                    biggest = a
+            if a.edge:
+                continue
+            if not biggest:
+                biggest = a
+                continue
+            if a.size > biggest.size:
+                biggest = a
         return biggest
+
+    def analyze_region(areas):
+        left = min([o.x for o in areas])
+        right = max([o.x for o in areas])
+        top = min([o.y for o in areas])
+        bot = max([o.y for o in areas])
+
+        size = 0
+        map_ = Map(left, top, right - left + 1, bot - top + 1)
+        # print(map_)
+
+        for x in range(left, right + 1):
+            for y in range(top, bot + 1):
+                distance = 0
+                for a in areas:
+                    distance += distance_between(x, y, a.x, a.y)
+                if distance < 10000:
+                    size += 1
+                    map_[(x, y)] = 'x'
+        return size, map_
 
     filename = sys.argv[1]
     print(f'file: {filename}')
@@ -117,3 +138,7 @@ if __name__ == '__main__':
 
     biggest = find_biggest_not_edge(areas)
     print(f'[06a] biggest none-infinite area has size: {biggest.size}')
+
+    # assuming that all target points are within the grid
+    size, map_ = analyze_region(areas)
+    print(f'[06b] region is has size: {size}')
