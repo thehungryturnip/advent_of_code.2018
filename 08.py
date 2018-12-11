@@ -12,6 +12,7 @@ if __name__ == '__main__':
             self.name = name
             self.children = []
             self.data = []
+            self.val = None
 
         def __str__(self):
             string = f'{self.name}:{[c.name for c in self.children]}:{self.data}\n'
@@ -42,6 +43,19 @@ if __name__ == '__main__':
             total += sum_meta(c)
         return total
 
+    def value_of(node):
+        if node.val:
+            return node.val
+        if not node.children:
+            node.val = sum(node.data)
+            return node.val
+        node.val = 0
+        for d in node.data:
+            d -= 1
+            if d in range(len(node.children)):
+                node.val += value_of(node.children[d])
+        return node.val
+
     filename = sys.argv[1]
     print(f'file: {filename}')
 
@@ -55,3 +69,6 @@ if __name__ == '__main__':
 
     meta_total = sum_meta(head)
     print(f'[08a] sum of all meta data is: {meta_total}')
+
+    value = value_of(head)
+    print(f'[08b] value of head is: {value}')
