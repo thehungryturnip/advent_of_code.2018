@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     head, tail = create_list(line)
     head = react_polymer(head)
-    print(f'[05a] {head} is {len(str(head))} long.')
+    print(f'[05a] reacted polymer is {len(str(head))} long.')
 
     types = {}
     cursor = head
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     removed = None
     shortest = None
     for t in types:
-        head, tail = create_list(line, t)
+        head, tail = create_list(str(head), t)
         head = react_polymer(head)
         if not shortest:
             removed = t
