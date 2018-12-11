@@ -71,7 +71,6 @@ if __name__ == '__main__':
         rounds = f.readlines()
     rounds = [r.split() for r in rounds]
     rounds = [(int(r[0]), int(r[6])) for r in rounds]
-    # print(rounds)
 
     for r in rounds:
         g = MarbleGame()
@@ -84,4 +83,4 @@ if __name__ == '__main__':
             if p == len(scores):
                 p = 0
         highest = max(scores)
-        print(f'Game {r} has high score {highest}')
+        print(f'[09] Game {r} has high score {highest}')
