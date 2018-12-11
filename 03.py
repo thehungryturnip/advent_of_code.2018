@@ -34,7 +34,7 @@ if __name__ == '__main__':
     for c in claims:
         for h in range(c.h):
             for w in range(c.w):
-                coord = f'{c.x + w}x{c.y + h}'
+                coord = (c.x + w, c.y + h)
                 if coord in fabric:
                     fabric[coord] += 1
                 else:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
         overlap = False
         for h in range(c.h):
             for w in range(c.w):
-                coord = f'{c.x + w}x{c.y + h}'
+                coord = (c.x + w, c.y + h)
                 if fabric[coord] > 1:
                     overlap = True
         if not overlap:
