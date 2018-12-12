@@ -63,6 +63,8 @@ if __name__ == '__main__':
     points = [Point(p[1], p[2], p[4], p[5]) for p in points]
 
     c = Canvas(points)
+
+    # assumes that the text converges when the points are closest together
     previous = sys.maxsize
     c.update_size()
     time = 0
