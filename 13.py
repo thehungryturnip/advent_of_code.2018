@@ -103,6 +103,7 @@ if __name__ == '__main__':
             self.map = [[' ' for c in range(cols)] for r in range(rows)]
             self.carts_map = [[None for c in range(cols)] for r in range(rows)]
             self.cart_locs = []
+            self.crashes = []
 
         def set_track(self, r, c, track):
             if track in '^>v<':
@@ -118,27 +119,35 @@ if __name__ == '__main__':
         def move_cart(self, r, c):
             cart = self.carts_map[r][c]
             self.carts_map[r][c] = None
+
             dr, dc = cart.move()
             r += dr
             c += dc
+
             if self.carts_map[r][c]:
-                return (r, c)
+                self.carts_map[r][c] = None
+                self.crashes.append((r, c))
+                return
+
             self.carts_map[r][c] = cart
             heappush(self.cart_locs, (r, c))
+
             track = self.map[r][c]
             if track == '+':
                 cart.intersection_turn()
             else:
                 cart.facing += Map.TURN_CASE.get((cart.facing, track), 0)
 
-        def proceed(self):
+        def process_tick(self):
             old_locs = self.cart_locs
             self.cart_locs = []
             while old_locs:
                 loc = heappop(old_locs)
-                crashed = self.move_cart(loc[0], loc[1])
-                if crashed:
-                    return crashed
+                if self.carts_map[loc[0]][loc[1]]:
+                    self.move_cart(loc[0], loc[1])
+
+        def carts_remaining(self):
+            return len(self.cart_locs)
 
         def __str__(self):
             string = ''
@@ -176,9 +185,12 @@ if __name__ == '__main__':
     m = Map(len(rows), find_max_cols(rows))
     populate_map(rows, m)
 
-    crashed = None
-    while not crashed:
-        crashed = m.proceed()
+    while not m.crashes:
+        m.process_tick()
+    crashed_at = m.crashes[-1]
+    print(f'[13a] first crash occured at ({crashed_at[1]},{crashed_at[0]})')
 
-    print(f'[13a] first crash occured at coordinate' +
-          f' ({crashed[1]},{crashed[0]})')
+    while len(m.cart_locs) > 1:
+        m.process_tick()
+    last_loc = m.cart_locs[0]
+    print(f'[13b] last cart is at ({last_loc[1]},{last_loc[0]})')
