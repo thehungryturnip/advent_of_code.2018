@@ -2,3 +2,6 @@
 *~
 *.swp
 *.swo
+
+# tmp/test  files
+foo
