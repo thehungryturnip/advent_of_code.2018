@@ -98,14 +98,19 @@ class Scan(dict):
                 analyzing.extend(self.__analyze(analyzing.pop()))
 
     def count_wet(self):
-        # -1 to remove the source
-        return len([v for v in s.values() if v > Scan.Type.CLAY]) - 1
+        return len([c for c in s if c.y >= s.y_min and s[c] > Scan.Type.CLAY])
+
+    def count_settled(self):
+        return len([c for c in s if 
+                    c.y >= s.y_min and s[c] == Scan.Type.WATER_SETTLED])
 
     def __check_minmax(self, c):
         if not hasattr(self, 'x_min') or c.x - 1 < self.x_min:
             self.x_min = c.x - 1
         if not hasattr(self, 'x_max') or c.x + 1 > self.x_max:
             self.x_max = c.x + 1
+        if not hasattr(self, 'y_min') or c.y < self.y_min:
+            self.y_min = c.y
         if not hasattr(self, 'y_max') or c.y > self.y_max:
             self.y_max = c.y
 
@@ -180,3 +185,5 @@ if __name__ == '__main__':
     s.analyze_flow()
     print(s)
     print(f'[17a] {s.count_wet()} number of tiles are reachable by water.')
+    print(f'[17b] {s.count_settled()} number of tiles will remain after the'
+          ' source runs dry.')
