@@ -4,7 +4,7 @@
 
 import hashlib
 import sys
-from collections import defaultdict, namedtuple
+from collections import namedtuple
 from enum import Enum, auto
 
 Result = namedtuple('Result', ['min', 'state_hash', 'tree_count', 'yard_count'])
@@ -32,7 +32,7 @@ class Area:
         self.__loop_start = None
         self.__loop_length = None
         self.__results_by_min = []
-        self.__results_by_state_hash = defaultdict()
+        self.__results_by_state_hash = {}
 
     def add_row(self, row_str):
         new_row = [self.__SYMBOL_TO_TYPE[c] for c in row_str]
