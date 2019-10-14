@@ -1,21 +1,35 @@
+# thehuntryturnip@gmail.com
+
+# 2019-09-30 Marked up for Adevent of Code 2018, Part 19B.
+
 #ip 3
-addi 3 16 3
-seti 1 8 5
-seti 1 0 4
-mulr 5 4 2
-eqrr 2 1 2
-addr 2 3 3
-addi 3 1 3
-addr 5 0 0
-addi 4 1 4
-gtrr 4 1 2
-addr 3 2 3
-seti 2 3 3
-addi 5 1 5
-gtrr 5 1 2
-addr 2 3 3
-seti 1 4 3
-mulr 3 3 3
+## starts program on instruction 17
+addi 3 16 3     # go to stop 17.
+
+## set up [5] for loop
+seti 1 8 5      # sets [5] to 1.
+seti 1 0 4      # sets [4] to 1.
+
+## loops through [4] until [4] > [1]
+### if [4] * [5] == [1], [4] is a factor and add to [0].
+mulr 5 4 2      # stores [4] * [5] into [2].
+eqrr 2 1 2      # if [2] == [1], found a factor, set [2] to 1.
+addr 2 3 3      # skip one instruction if found a factor.
+addi 3 1 3      # if not skipping, don't execute next step.
+addr 5 0 0      # skipped instrucution, add factor to [0].
+addi 4 1 4      # increment [4].
+gtrr 4 1 2      # if [4] < [1], next [4] is bigger than [1], set [2] to 1.
+addr 3 2 3      # terminating loop if [4] is bigger than [1].
+seti 2 3 3      # [4] is not bigger than [1]. check [4].
+
+## sets up next [5] or terminates program
+addi 5 1 5      # increment [5].
+gtrr 5 1 2      # if [5] < [1],next [5] is bigger than [1], set [2] to 1.
+addr 2 3 3      # terminating loop if [5] is bigger than [1].
+seti 1 4 3      # [5] is not bigger than [1]. check [5].
+mulr 3 3 3      # this terminates the program.
+
+## generates big number
 addi 1 2 1
 mulr 1 1 1
 mulr 3 1 1
@@ -24,8 +38,9 @@ addi 2 4 2
 mulr 2 3 2
 addi 2 19 2
 addr 1 2 1
-addr 3 0 3
-seti 0 7 3
+addr 3 0 3      # determines if number generation should continue. (for part 2.)
+seti 0 7 3      # number generation stops here for part 1.
+
 setr 3 2 2
 mulr 2 3 2
 addr 3 2 2
@@ -34,4 +49,4 @@ muli 2 14 2
 mulr 2 3 2
 addr 1 2 1
 seti 0 1 0
-seti 0 5 3
+seti 0 5 3      # number generation stops here for part 2. instuction 35. (print and exit for part 2.)
