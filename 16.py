@@ -22,8 +22,8 @@ if __name__ == '__main__':
             _muli = auto()
             _banr = auto()
             _bani = auto()
-            _bonr = auto()
-            _boni = auto()
+            _borr = auto()
+            _bori = auto()
             _setr = auto()
             _seti = auto()
             _gtir = auto()
@@ -126,10 +126,10 @@ if __name__ == '__main__':
         def _bani(self, r_a, v_b, r_c):
             self.reg[r_c] = self.reg[r_a] & v_b
 
-        def _bonr(self, r_a, r_b, r_c):
+        def _borr(self, r_a, r_b, r_c):
             self.reg[r_c] = self.reg[r_a] | self.reg[r_b]
 
-        def _boni(self, r_a, v_b, r_c):
+        def _bori(self, r_a, v_b, r_c):
             self.reg[r_c] = self.reg[r_a] | v_b
 
         def _setr(self, r_a, _, r_c):

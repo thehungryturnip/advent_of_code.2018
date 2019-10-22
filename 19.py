@@ -17,8 +17,8 @@ class Processor:
             'muli': '_Processor__muli',
             'banr': '_Processor__banr',
             'bani': '_Processor__bani',
-            'bonr': '_Processor__bonr',
-            'boni': '_Processor__boni',
+            'borr': '_Processor__borr',
+            'bori': '_Processor__bori',
             'setr': '_Processor__setr',
             'seti': '_Processor__seti',
             'gtir': '_Processor__gtir',
@@ -89,10 +89,10 @@ class Processor:
     def __bani(self, r_a, v_b, r_c):
         self.__reg[r_c] = self.__reg[r_a] & v_b
 
-    def __bonr(self, r_a, r_b, r_c):
+    def __borr(self, r_a, r_b, r_c):
         self.__reg[r_c] = self.__reg[r_a] | self.__reg[r_b]
 
-    def __boni(self, r_a, v_b, r_c):
+    def __bori(self, r_a, v_b, r_c):
         self.__reg[r_c] = self.__reg[r_a] | v_b
 
     def __setr(self, r_a, _, r_c):
