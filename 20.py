@@ -47,7 +47,7 @@ class Instruction(Enum):
 class Split:
     def __init__(self, branches):
         self.prev = branches
-        self.next = []
+        self.next = set()
 
 class Map(Graph):
 
@@ -56,48 +56,29 @@ class Map(Graph):
     def __init__(self, defstr):
         super().__init__()
         self.defstring = defstr
-        # self.build_graph()
-        # this algorithm assumes that all branches completes before continuing
-        self.build_graph_assume()
+        self.build_graph()
         self.lengths = algorithms.shortest_path_length(self, Coord(0, 0))
 
     def build_graph(self):
         for c in self.defstring:
             if c is Instruction.START.value:
                 self.clear()
-                branches = [Coord(0, 0)]
+                branches = set([Coord(0, 0)])
                 splits = []
             elif c in Instruction.STEP.value:
-                new_branches = []
+                new_branches = set()
                 for curr_node in branches:
                     next_node = curr_node.delta(Direction(c))
                     self.add_edge(curr_node, next_node)
-                    new_branches.append(next_node)
+                    new_branches.add(next_node)
                 branches = new_branches
             elif c in Instruction.START_BRANCHING.value:
                 splits.append(Split(branches))
             elif c in Instruction.NEW_BRANCH.value:
-                splits[-1].next += branches
+                splits[-1].next = splits[-1].next.union(branches)
                 branches = splits[-1].prev
             elif c in Instruction.END_BRANCHING.value:
-                branches += splits.pop().next
-
-    def build_graph_assume(self):
-        for c in self.defstring:
-            if c is Instruction.START.value:
-                self.clear()
-                curr_node = Coord(0, 0)
-                splits = []
-            elif c in Instruction.STEP.value:
-                next_node = curr_node.delta(Direction(c))
-                self.add_edge(curr_node, next_node)
-                curr_node = next_node
-            elif c in Instruction.START_BRANCHING.value:
-                splits.append(curr_node)
-            elif c in Instruction.NEW_BRANCH.value:
-                curr_node = splits[-1]
-            elif c in Instruction.END_BRANCHING.value:
-                curr_node = splits.pop()
+                branches = branches.union(splits.pop().next)
 
     def furthest_distance(self):
         return max(self.lengths.values())
@@ -123,9 +104,9 @@ if __name__ == '__main__':
     maps = []
     for d in defstrs:
         m = Map(d)
-        print(f'Nodes:{len(m.nodes)} Edges:{len(m.edges)}')
         maps.append(m)
 
     for m in maps:
+        print(m.defstring)
         print(f'[20a] Furthest room is {m.furthest_distance()} away.')
         print(f'[20b] {m.distance_over(1000)} rooms 1000 or more doors away.')
